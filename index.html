@@ -3,203 +3,97 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>🌿 EcoBuilder</title>
+    <title>ECOBUILDER: Mente Verde – Mindaxis</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            background: #0a0f1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-            touch-action: none;
-            padding: 10px;
-        }
-        #gameContainer {
-            background: #111a2e;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 0 50px rgba(0, 255, 170, 0.12);
-            border: 1px solid rgba(0, 255, 170, 0.15);
-            max-width: 580px;
-            width: 100%;
-            margin: 0 auto;
-        }
-        canvas {
-            display: block;
-            border-radius: 14px;
-            background: #0d1525;
-            width: 100%;
-            height: auto;
-            aspect-ratio: 1 / 1;
-            touch-action: none;
-            cursor: pointer;
-        }
-        #ui {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 8px;
-            margin-top: 14px;
-            color: #a0e8d0;
-            font-size: 14px;
-        }
-        #ui span {
-            background: #1a2a44;
-            padding: 8px 4px;
-            border-radius: 30px;
-            border: 1px solid #2a4a66;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 13px;
-            font-weight: bold;
-            min-height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #ui button {
-            background: #00d4a0;
-            border: none;
-            padding: 8px 4px;
-            border-radius: 30px;
-            font-weight: bold;
-            color: #0a0f1a;
-            cursor: pointer;
-            font-size: 16px;
-            min-height: 38px;
-            touch-action: manipulation;
-            transition: 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #ui button:active {
-            transform: scale(0.93);
-        }
-        #btnResetProgreso {
-            background: #ff6644 !important;
-            color: white !important;
-        }
-        #mensaje {
-            grid-column: span 4;
-            color: #88ddbb;
-            font-size: 14px;
-            background: #0f1f2e;
-            padding: 8px 12px;
-            border-radius: 30px;
-            border-left: 4px solid #00d4a0;
-            text-align: center;
-            min-height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        #objetivoDisplay {
-            grid-column: span 1;
-            background: #1a2a44;
-            padding: 8px 4px;
-            border-radius: 30px;
-            border: 2px solid #ffdd44;
-            text-align: center;
-            font-size: 28px;
-            color: #ffdd44;
-            min-height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #anuncioOverlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.94);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            color: white;
-            font-family: Arial;
-        }
-        #anuncioOverlay .contenedor {
-            background: #1a2a44;
-            padding: 32px 24px;
-            border-radius: 20px;
-            text-align: center;
-            border: 2px solid #00d4a0;
-            max-width: 340px;
-            width: 90%;
-        }
-        #anuncioOverlay .icono {
-            font-size: 48px;
-            margin-bottom: 14px;
-        }
-        #anuncioOverlay h2 {
-            color: #fff;
-            margin-bottom: 8px;
-            font-size: 22px;
-        }
-        #anuncioOverlay p {
-            color: #aaddbb;
-            margin-bottom: 16px;
-            font-size: 16px;
-        }
-        #anuncioOverlay .barra-fondo {
-            width: 100%;
-            height: 8px;
-            background: #333;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        #anuncioOverlay .barra-progreso {
-            width: 0%;
-            height: 100%;
-            background: #00d4a0;
-            transition: width 0.1s;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        body { background: #0a0f1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; overflow: hidden; touch-action: none; padding: 10px; }
+        #gameContainer { background: #111a2e; border-radius: 20px; padding: 16px; box-shadow: 0 0 50px rgba(0,255,170,0.1); border: 1px solid rgba(0,255,170,0.12); max-width: 500px; width: 100%; margin: 0 auto; }
+        #branding { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 4px; flex-wrap: wrap; gap: 4px; }
+        #branding .titulo { font-size: 18px; color: #00d4a0; font-weight: bold; letter-spacing: 0.5px; }
+        #branding .titulo span { color: #ffdd44; }
+        #branding .autor { font-size: 10px; color: #6688aa; background: #0f1f2e; padding: 3px 10px; border-radius: 30px; border: 1px solid #1a2a44; }
+        #perfil { display: flex; align-items: center; gap: 10px; background: #0f1f2e; padding: 6px 12px 6px 8px; border-radius: 30px; border: 1px solid #1a2a44; margin-bottom: 10px; }
+        #perfil .avatar { font-size: 28px; line-height: 1; }
+        #perfil .nombre { color: #88ddbb; font-size: 14px; font-weight: bold; }
+        #perfil .nivel-info { color: #6688aa; font-size: 11px; margin-left: auto; }
+        canvas { display: block; border-radius: 12px; background: #0d1525; width: 100%; height: auto; aspect-ratio: 1/1; touch-action: none; cursor: pointer; }
+        #ui { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin-top: 10px; color: #a0e8d0; font-size: 12px; }
+        #ui span { background: #1a2a44; padding: 6px 4px; border-radius: 30px; border: 1px solid #2a4a66; text-align: center; font-size: 11px; font-weight: bold; min-height: 32px; display: flex; align-items: center; justify-content: center; }
+        #ui button { background: #00d4a0; border: none; padding: 6px 4px; border-radius: 30px; font-weight: bold; color: #0a0f1a; cursor: pointer; font-size: 14px; min-height: 32px; touch-action: manipulation; transition: 0.1s; display: flex; align-items: center; justify-content: center; }
+        #ui button:active { transform: scale(0.93); }
+        #btnResetProgreso { background: #ff6644 !important; color: white !important; }
+        #mensaje { grid-column: span 4; color: #88ddbb; font-size: 12px; background: #0f1f2e; padding: 6px 10px; border-radius: 30px; border-left: 3px solid #00d4a0; text-align: center; min-height: 32px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        #objetivoDisplay { grid-column: span 1; background: #1a2a44; padding: 6px 4px; border-radius: 30px; border: 2px solid #ffdd44; text-align: center; font-size: 22px; color: #ffdd44; min-height: 32px; display: flex; align-items: center; justify-content: center; }
+        #anuncioOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.94); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-family: Arial; }
+        #anuncioOverlay .contenedor { background: #1a2a44; padding: 28px 20px; border-radius: 20px; text-align: center; border: 2px solid #00d4a0; max-width: 300px; width: 90%; }
+        #anuncioOverlay .icono { font-size: 40px; margin-bottom: 10px; }
+        #anuncioOverlay h2 { color: #fff; margin-bottom: 6px; font-size: 20px; }
+        #anuncioOverlay p { color: #aaddbb; margin-bottom: 12px; font-size: 14px; }
+        #anuncioOverlay .barra-fondo { width: 100%; height: 6px; background: #333; border-radius: 10px; overflow: hidden; }
+        #anuncioOverlay .barra-progreso { width: 0%; height: 100%; background: #00d4a0; transition: width 0.1s; }
         @media (max-width: 500px) {
-            #ui {
-                gap: 5px;
-                font-size: 12px;
-            }
-            #ui span {
-                font-size: 11px;
-                padding: 6px 2px;
-                min-height: 32px;
-            }
-            #ui button {
-                font-size: 14px;
-                min-height: 32px;
-                padding: 6px 2px;
-            }
-            #mensaje {
-                font-size: 12px;
-                padding: 6px 8px;
-                min-height: 32px;
-            }
-            #objetivoDisplay {
-                font-size: 22px;
-                min-height: 32px;
-            }
+            #ui { gap: 4px; font-size: 10px; }
+            #ui span { font-size: 10px; padding: 4px 2px; min-height: 28px; }
+            #ui button { font-size: 12px; min-height: 28px; padding: 4px 2px; }
+            #mensaje { font-size: 10px; padding: 4px 6px; min-height: 28px; }
+            #objetivoDisplay { font-size: 18px; min-height: 28px; }
+            #branding .titulo { font-size: 15px; }
+            #branding .autor { font-size: 9px; padding: 2px 8px; }
+            #perfil .nombre { font-size: 12px; }
+            #perfil .avatar { font-size: 22px; }
         }
+        #tutorialModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; font-family: Arial, sans-serif; padding: 20px; }
+        #tutorialModal .contenedor { background: #111a2e; border: 2px solid #00d4a0; border-radius: 20px; padding: 24px 20px; max-width: 400px; width: 100%; color: white; text-align: center; max-height: 90vh; overflow-y: auto; }
+        #tutorialModal h1 { font-size: 28px; margin-bottom: 4px; color: #00d4a0; }
+        #tutorialModal h1 span { color: #ffdd44; }
+        #tutorialModal .subtitulo { font-size: 12px; color: #6688aa; margin-bottom: 14px; }
+        #tutorialModal .emoji-big { font-size: 56px; display: block; margin: 4px 0; }
+        #tutorialModal p { font-size: 14px; color: #c0ddd0; line-height: 1.5; margin: 10px 0; }
+        #tutorialModal .paso { background: #1a2a44; border-radius: 12px; padding: 12px; margin: 10px 0; text-align: left; border-left: 3px solid #00d4a0; font-size: 13px; }
+        #tutorialModal .paso span { font-size: 20px; margin-right: 8px; }
+        #tutorialModal .boton-jugar { background: #00d4a0; border: none; padding: 12px 30px; border-radius: 60px; font-size: 20px; font-weight: bold; color: #0a0f1a; cursor: pointer; margin-top: 16px; transition: 0.2s; width: 100%; }
+        #tutorialModal .boton-jugar:active { transform: scale(0.95); }
+        #tutorialModal .footer-marca { margin-top: 14px; font-size: 11px; color: #445566; }
+        #mapaModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 9998; justify-content: center; align-items: center; font-family: Arial, sans-serif; padding: 20px; }
+        #mapaModal .contenedor { background: #111a2e; border: 2px solid #ffdd44; border-radius: 20px; padding: 20px 16px; max-width: 460px; width: 100%; color: white; text-align: center; max-height: 85vh; overflow-y: auto; }
+        #mapaModal h2 { font-size: 22px; color: #ffdd44; margin-bottom: 14px; }
+        #mapaModal .grid-niveles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 14px 0; }
+        #mapaModal .nodo-nivel { background: #1a2a44; border-radius: 10px; padding: 6px 2px; border: 2px solid #2a4a66; font-size: 11px; color: #88aacc; transition: 0.2s; }
+        #mapaModal .nodo-nivel.completado { border-color: #ffdd44; background: #2a3a55; color: #ffdd44; }
+        #mapaModal .nodo-nivel.actual { border-color: #00d4a0; background: #1a3a44; color: #00d4a0; font-weight: bold; box-shadow: 0 0 16px rgba(0,212,160,0.2); }
+        #mapaModal .nodo-nivel.bloqueado { opacity: 0.4; }
+        #mapaModal .cerrar-mapa { background: #ff6644; border: none; padding: 8px 24px; border-radius: 30px; font-weight: bold; color: white; cursor: pointer; font-size: 14px; margin-top: 8px; }
+        #mapaModal .cerrar-mapa:active { transform: scale(0.95); }
+        .btn-mapa { background: #2a4a66 !important; color: white !important; }
+        .btn-mapa:active { transform: scale(0.93); }
+        #perfilModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 10001; justify-content: center; align-items: center; font-family: Arial, sans-serif; padding: 20px; }
+        #perfilModal .contenedor { background: #111a2e; border: 2px solid #00d4a0; border-radius: 24px; padding: 30px 24px; max-width: 400px; width: 100%; color: white; text-align: center; box-shadow: 0 0 60px rgba(0,212,160,0.1); }
+        #perfilModal h2 { color: #ffdd44; font-size: 24px; margin-bottom: 16px; }
+        #perfilModal .avatar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 16px 0; }
+        #perfilModal .avatar-opcion { font-size: 32px; padding: 8px; background: #1a2a44; border-radius: 12px; border: 2px solid #2a4a66; cursor: pointer; transition: 0.2s; text-align: center; }
+        #perfilModal .avatar-opcion:hover { border-color: #00d4a0; }
+        #perfilModal .avatar-opcion.seleccionado { border-color: #ffdd44; background: #2a3a55; }
+        #perfilModal input { width: 100%; padding: 12px 16px; border-radius: 30px; border: 2px solid #2a4a66; background: #0f1f2e; color: white; font-size: 16px; text-align: center; margin: 12px 0; outline: none; }
+        #perfilModal input:focus { border-color: #00d4a0; }
+        #perfilModal .boton-perfil { background: #00d4a0; border: none; padding: 12px 30px; border-radius: 60px; font-size: 18px; font-weight: bold; color: #0a0f1a; cursor: pointer; margin-top: 8px; transition: 0.2s; width: 100%; }
+        #perfilModal .boton-perfil:active { transform: scale(0.95); }
+        #perfilModal .error { color: #ff6644; font-size: 13px; margin-top: 4px; }
     </style>
 </head>
 <body>
 
     <div id="gameContainer">
+        <!-- Perfil del jugador -->
+        <div id="perfil">
+            <span class="avatar" id="avatarDisplay">👾</span>
+            <span class="nombre" id="nombreDisplay">Jugador</span>
+            <span class="nivel-info" id="nivelInfoDisplay">Nv. 1</span>
+        </div>
+
+        <div id="branding">
+            <span class="titulo">🌿 ECOBUILDER: <span>Mente Verde</span></span>
+            <span class="autor">by Mindaxis – FFLOREZ 2026</span>
+        </div>
         <canvas id="gameCanvas" width="500" height="500"></canvas>
         <div id="ui">
             <span>🌱 Nv <strong id="nivelDisplay">1</strong></span>
@@ -208,7 +102,26 @@
             <span id="objetivoDisplay">🌱</span>
             <button id="btnReiniciar">↻</button>
             <button id="btnResetProgreso">🗑️</button>
-            <span id="mensaje" style="grid-column: span 2;">🔍 Busca el objetivo</span>
+            <button id="btnMapa" class="btn-mapa" style="grid-column: span 2;">🗺️ Mapa</button>
+            <span id="mensaje" style="grid-column: span 4;">🔍 Busca el objetivo</span>
+        </div>
+    </div>
+
+    <!-- Modal de perfil -->
+    <div id="perfilModal">
+        <div class="contenedor">
+            <h2>🌿 Crea tu perfil</h2>
+            <p style="color: #88ddbb; font-size: 14px; margin-bottom: 8px;">Elige tu avatar y escribe tu nombre</p>
+            <div class="avatar-grid" id="avatarGrid">
+                <div class="avatar-opcion" data-avatar="👾">👾</div>
+                <div class="avatar-opcion" data-avatar="🤖">🤖</div>
+                <div class="avatar-opcion" data-avatar="👽">👽</div>
+                <div class="avatar-opcion" data-avatar="🛸">🛸</div>
+                <div class="avatar-opcion" data-avatar="🧑‍🚀">🧑‍🚀</div>
+            </div>
+            <input type="text" id="nombreInput" placeholder="Escribe tu nombre" maxlength="20" />
+            <div id="errorNombre" class="error"></div>
+            <button class="boton-perfil" id="btnGuardarPerfil">Ingresar</button>
         </div>
     </div>
 
@@ -223,10 +136,33 @@
         </div>
     </div>
 
+    <div id="tutorialModal">
+        <div class="contenedor">
+            <span class="emoji-big">🌿</span>
+            <h1>ECOBUILDER: <span>Mente Verde</span></h1>
+            <div class="subtitulo">by Mindaxis – FFLOREZ 2026</div>
+            <p><strong>Entrena tu mente</strong> con 5 modos de juego diferentes.</p>
+            <div class="paso"><span>🎯</span> <strong>1. Mira el objetivo</strong><br />En la esquina superior derecha verás el <strong>emoji</strong> que debes buscar.</div>
+            <div class="paso"><span>👆</span> <strong>2. Toca el objetivo</strong><br />Busca ese mismo emoji entre los que se mueven en la pantalla y <strong>tócalo</strong>.</div>
+            <div class="paso"><span>⭐</span> <strong>3. Gana estrellas</strong><br />Completa el nivel rápido y obtén <strong>hasta 3 estrellas</strong>.</div>
+            <div class="paso"><span>🚫</span> <strong>4. Cuidado con los errores</strong><br />Si tocas el objeto incorrecto, <strong>pierdes el nivel</strong> y debes reintentarlo.</div>
+            <button class="boton-jugar" id="btnCerrarTutorial">¡Entendido, a jugar!</button>
+            <div class="footer-marca">© 2026 Mindaxis – FFLOREZ</div>
+        </div>
+    </div>
+
+    <div id="mapaModal">
+        <div class="contenedor">
+            <h2>🗺️ Mapa de Niveles</h2>
+            <div class="grid-niveles" id="gridMapa"></div>
+            <button class="cerrar-mapa" id="btnCerrarMapa">Cerrar</button>
+        </div>
+    </div>
+
     <script>
-        // ============================================
-        //  ECOBUILDER - VERSIÓN MEJORADA (TAMAÑO + UI)
-        // ============================================
+        // ============================================================
+        //  ECOBUILDER: MENTE VERDE – 100 NIVELES CON 5 MODOS + PERFIL
+        // ============================================================
 
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -242,27 +178,149 @@
         const anuncioTexto = document.getElementById('anuncioTexto');
         const anuncioBarra = document.getElementById('anuncioBarra');
 
-        // =========== TIPOS ===========
-        const TIPOS = ['🌱', '💧', '🌿', '🍄', '🌸', '🌳'];
+        // ============ SONIDOS ============
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
 
-        // =========== 20 NIVELES ===========
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+        }
+
+        function playTono(freq, dur, vol = 0.12, tipo = 'sine') {
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = tipo;
+                osc.frequency.value = freq;
+                gain.gain.value = vol;
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + dur);
+            } catch (e) { /* ignorar */ }
+        }
+
+        function sonidoAcierto() {
+            playTono(880, 0.1, 0.12);
+            setTimeout(() => playTono(1100, 0.08, 0.10), 100);
+        }
+
+        function sonidoError() {
+            playTono(300, 0.2, 0.14, 'sawtooth');
+        }
+
+        function sonidoNivel() {
+            playTono(660, 0.08, 0.12);
+            setTimeout(() => playTono(880, 0.08, 0.12), 100);
+            setTimeout(() => playTono(1100, 0.12, 0.14), 200);
+        }
+
+        function sonidoTiempo() {
+            playTono(440, 0.06, 0.08);
+            setTimeout(() => playTono(330, 0.1, 0.10), 80);
+        }
+
+        // ============ TIPOS ============
+        const TIPOS = ['🌱', '💧', '🌿', '🍄', '🌸', '🌳', '🌟', '⚡', '🔥', '💎', '🦋', '🌈', '🌺', '🍀', '⭐', '🔮', '✨', '🌌', '👾', '🎯', '🌀'];
+
+        // ============ GENERAR NIVELES ============
         const LEVELS = [];
+
+        // Niveles 1-20: CLÁSICO
         for (let i = 1; i <= 20; i++) {
-            const tipoObjetivo = TIPOS[i % TIPOS.length];
-            const meta = Math.min(6 + i * 1.8, 30);
-            const tiempo = Math.max(15, 35 - i * 1.2);
-            const recursos = Math.min(45, 18 + i * 1.5);
+            const tipoObj = TIPOS[i % TIPOS.length];
+            const meta = Math.min(6 + i * 1.5, 20);
+            const tiempo = Math.max(20, 35 - i * 0.8);
+            const recursos = Math.min(40, 18 + i * 1.2);
             LEVELS.push({
                 nivel: i,
                 tiempo: Math.round(tiempo),
                 recursos: Math.round(recursos),
                 meta: Math.round(meta),
-                objetivo: tipoObjetivo,
-                anuncio: i > 1 && i % 2 === 0 ? 'intersticial' : (i > 1 && i % 3 === 0 ? 'recompensado' : false)
+                objetivo: tipoObj,
+                modo: 'clasico',
+                anuncio: i > 1 && i % 2 === 0 ? 'intersticial' : false
             });
         }
 
-        // =========== ESTADO ===========
+        // Niveles 21-40: DUELO DE VELOCIDAD
+        for (let i = 21; i <= 40; i++) {
+            const idx = i % TIPOS.length;
+            const obj1 = TIPOS[idx];
+            const obj2 = TIPOS[(idx + 1) % TIPOS.length];
+            const meta = 2;
+            const tiempo = 3;
+            const recursos = Math.min(50, 25 + (i - 20) * 0.8);
+            LEVELS.push({
+                nivel: i,
+                tiempo: Math.round(tiempo),
+                recursos: Math.round(recursos),
+                meta: meta,
+                objetivo: [obj1, obj2],
+                modo: 'duelo_velocidad',
+                anuncio: i % 2 === 0 ? 'intersticial' : false
+            });
+        }
+
+        // Niveles 41-60: MEMORIA VISUAL
+        for (let i = 41; i <= 60; i++) {
+            const tipoObj = TIPOS[i % TIPOS.length];
+            const meta = Math.min(6 + (i - 40) * 1.2, 18);
+            const tiempo = Math.max(15, 25 - (i - 40) * 0.4);
+            const recursos = Math.min(45, 22 + (i - 40) * 0.7);
+            LEVELS.push({
+                nivel: i,
+                tiempo: Math.round(tiempo),
+                recursos: Math.round(recursos),
+                meta: Math.round(meta),
+                objetivo: tipoObj,
+                modo: 'memoria_visual',
+                anuncio: i % 2 === 0 ? 'intersticial' : false
+            });
+        }
+
+        // Niveles 61-80: CAMPO MINADO
+        for (let i = 61; i <= 80; i++) {
+            const tipoObj = TIPOS[i % TIPOS.length];
+            const meta = Math.min(8 + (i - 60) * 0.8, 20);
+            const tiempo = Math.max(18, 28 - (i - 60) * 0.5);
+            const recursos = Math.min(50, 28 + (i - 60) * 0.6);
+            LEVELS.push({
+                nivel: i,
+                tiempo: Math.round(tiempo),
+                recursos: Math.round(recursos),
+                meta: Math.round(meta),
+                objetivo: tipoObj,
+                modo: 'campo_minado',
+                anuncio: i % 2 === 0 ? 'intersticial' : false
+            });
+        }
+
+        // Niveles 81-100: CAOS TOTAL
+        for (let i = 81; i <= 100; i++) {
+            const idx = i % TIPOS.length;
+            const obj1 = TIPOS[idx];
+            const obj2 = TIPOS[(idx + 1) % TIPOS.length];
+            const obj3 = TIPOS[(idx + 2) % TIPOS.length];
+            const meta = 3;
+            const tiempo = Math.max(12, 20 - (i - 80) * 0.3);
+            const recursos = Math.min(55, 32 + (i - 80) * 0.5);
+            LEVELS.push({
+                nivel: i,
+                tiempo: Math.round(tiempo),
+                recursos: Math.round(recursos),
+                meta: meta,
+                objetivo: [obj1, obj2, obj3],
+                modo: 'caos_total',
+                anuncio: i % 2 === 0 ? 'intersticial' : false
+            });
+        }
+
+        // ============ ESTADO ============
         let nivelIndex = 0;
         let nivelData = LEVELS[0];
         let recursos = [];
@@ -274,11 +332,66 @@
         let animFrame;
         let juegoTerminado = false;
         let esperandoAnuncio = false;
+        let nivelesCompletados = [];
+        let tiempoCamuflaje = 0;
+        let tiempoDuelo = 0;
 
-        // =========== LOCAL STORAGE ===========
+        // ============ PERFIL ============
+        let perfil = {
+            nombre: 'Jugador',
+            avatar: '👾',
+            nivelIndex: 0,
+            puntaje: 0,
+            nivelesCompletados: []
+        };
+
+        function guardarPerfil() {
+            localStorage.setItem('ecobuilder_perfil', JSON.stringify(perfil));
+        }
+
+        function cargarPerfil() {
+            const raw = localStorage.getItem('ecobuilder_perfil');
+            if (raw) {
+                try {
+                    const data = JSON.parse(raw);
+                    perfil.nombre = data.nombre || 'Jugador';
+                    perfil.avatar = data.avatar || '👾';
+                    perfil.nivelIndex = data.nivelIndex || 0;
+                    perfil.puntaje = data.puntaje || 0;
+                    perfil.nivelesCompletados = data.nivelesCompletados || [];
+                    return true;
+                } catch (e) { /* ignorar */ }
+            }
+            return false;
+        }
+
+        function actualizarPerfilUI() {
+            document.getElementById('avatarDisplay').textContent = perfil.avatar;
+            document.getElementById('nombreDisplay').textContent = perfil.nombre;
+            document.getElementById('nivelInfoDisplay').textContent = `Nv. ${perfil.nivelIndex + 1}`;
+        }
+
+        function guardarProgresoCompleto() {
+            perfil.nivelIndex = nivelIndex;
+            perfil.puntaje = puntaje;
+            perfil.nivelesCompletados = nivelesCompletados;
+            guardarPerfil();
+        }
+
+        function actualizarEstadoDesdePerfil() {
+            nivelIndex = perfil.nivelIndex || 0;
+            puntaje = perfil.puntaje || 0;
+            nivelesCompletados = perfil.nivelesCompletados || [];
+            if (nivelIndex >= LEVELS.length) nivelIndex = LEVELS.length - 1;
+            nivelData = LEVELS[nivelIndex];
+            actualizarPerfilUI();
+        }
+
+        // ============ LOCAL STORAGE (progreso del juego) ============
         function guardarProgreso() {
-            const data = { nivelIndex, puntaje };
+            const data = { nivelIndex, puntaje, nivelesCompletados };
             localStorage.setItem('ecobuilder_progreso', JSON.stringify(data));
+            guardarProgresoCompleto();
         }
 
         function cargarProgreso() {
@@ -288,6 +401,7 @@
                     const data = JSON.parse(raw);
                     nivelIndex = data.nivelIndex || 0;
                     puntaje = data.puntaje || 0;
+                    nivelesCompletados = data.nivelesCompletados || [];
                     if (nivelIndex >= LEVELS.length) nivelIndex = LEVELS.length - 1;
                     nivelData = LEVELS[nivelIndex];
                     return true;
@@ -296,7 +410,7 @@
             return false;
         }
 
-        // =========== GENERAR RECURSOS ===========
+        // ============ GENERAR RECURSOS ============
         function generarRecursos(data) {
             const nuevos = [];
             const objetivo = data.objetivo;
@@ -304,30 +418,59 @@
             const meta = data.meta;
             const size = 500;
 
+            let objetivosArray = [];
+            if (Array.isArray(objetivo)) {
+                objetivosArray = objetivo;
+            } else {
+                objetivosArray = [objetivo];
+            }
+
             const cantObj = Math.min(meta + 3, total);
             for (let i = 0; i < cantObj; i++) {
+                const obj = objetivosArray[i % objetivosArray.length];
                 nuevos.push({
                     x: 40 + Math.random() * (size - 80),
                     y: 40 + Math.random() * (size - 80),
                     radio: 20 + Math.random() * 10,
-                    tipo: objetivo,
-                    dx: (Math.random() - 0.5) * 2.5,
-                    dy: (Math.random() - 0.5) * 2.5,
+                    tipo: obj,
+                    dx: (Math.random() - 0.5) * 2.2,
+                    dy: (Math.random() - 0.5) * 2.2,
+                    esObjetivo: true,
+                    esTrampa: false
                 });
             }
 
+            if (data.modo === 'campo_minado' || data.modo === 'caos_total') {
+                const numTrampas = Math.min(5 + Math.floor((data.nivel - 60) / 4), 12);
+                for (let i = 0; i < numTrampas; i++) {
+                    nuevos.push({
+                        x: 40 + Math.random() * (size - 80),
+                        y: 40 + Math.random() * (size - 80),
+                        radio: 20 + Math.random() * 10,
+                        tipo: '💀',
+                        dx: (Math.random() - 0.5) * 2.5,
+                        dy: (Math.random() - 0.5) * 2.5,
+                        esObjetivo: false,
+                        esTrampa: true
+                    });
+                }
+            }
+
             const restantes = total - nuevos.length;
-            const otrosTipos = TIPOS.filter(t => t !== objetivo);
             for (let i = 0; i < restantes; i++) {
-                const tipo = otrosTipos[Math.floor(Math.random() * otrosTipos.length)];
-                nuevos.push({
-                    x: 40 + Math.random() * (size - 80),
-                    y: 40 + Math.random() * (size - 80),
-                    radio: 20 + Math.random() * 10,
-                    tipo: tipo,
-                    dx: (Math.random() - 0.5) * 2.5,
-                    dy: (Math.random() - 0.5) * 2.5,
-                });
+                const tipo = TIPOS[Math.floor(Math.random() * TIPOS.length)];
+                if (!objetivosArray.includes(tipo) && tipo !== '💀') {
+                    nuevos.push({
+                        x: 40 + Math.random() * (size - 80),
+                        y: 40 + Math.random() * (size - 80),
+                        radio: 20 + Math.random() * 10,
+                        tipo: tipo,
+                        dx: (Math.random() - 0.5) * 2.2,
+                        dy: (Math.random() - 0.5) * 2.2,
+                        esObjetivo: false,
+                        esTrampa: false
+                    });
+                }
             }
 
             for (let i = nuevos.length - 1; i > 0; i--) {
@@ -335,10 +478,17 @@
                 [nuevos[i], nuevos[j]] = [nuevos[j], nuevos[i]];
             }
 
+            if (data.modo === 'memoria_visual') {
+                tiempoCamuflaje = 1.5;
+            }
+            if (data.modo === 'duelo_velocidad') {
+                tiempoDuelo = 0;
+            }
+
             return nuevos;
         }
 
-        // =========== ANUNCIOS ===========
+        // ============ ANUNCIOS ============
         function mostrarAnuncioIntersticial(callback) {
             esperandoAnuncio = true;
             overlay.style.display = 'flex';
@@ -346,7 +496,6 @@
             anuncioTitulo.textContent = 'ANUNCIO';
             anuncioTexto.textContent = '5s';
             anuncioBarra.style.width = '0%';
-
             let progreso = 0;
             const intervalo = setInterval(() => {
                 progreso += 2;
@@ -367,7 +516,6 @@
             anuncioTitulo.textContent = 'REWARD';
             anuncioTexto.textContent = '15s +20pts';
             anuncioBarra.style.width = '0%';
-
             let progreso = 0;
             const intervalo = setInterval(() => {
                 progreso += 0.67;
@@ -384,15 +532,14 @@
             }, 100);
         }
 
-        // =========== INICIAR NIVEL ===========
+        // ============ INICIAR NIVEL ============
         function iniciarNivel(index) {
             if (index >= LEVELS.length) {
-                mensajeEl.textContent = '🏆 ¡Completaste!';
+                mensajeEl.textContent = '🏆 ¡Completaste los 100 niveles!';
                 enJuego = false;
                 juegoTerminado = true;
                 return;
             }
-
             nivelIndex = index;
             nivelData = LEVELS[index];
             nivelDisplay.textContent = nivelData.nivel;
@@ -402,10 +549,25 @@
             recolectados = 0;
             enJuego = true;
             juegoTerminado = false;
-            mensajeEl.textContent = `🎯 ${nivelData.objetivo} (${metaActual})`;
+
+            let modoMsg = '';
+            const n = nivelData.nivel;
+            if (n <= 20) modoMsg = '🌱 Clásico';
+            else if (n <= 40) modoMsg = '⚡ Duelo velocidad';
+            else if (n <= 60) modoMsg = '🧠 Memoria visual';
+            else if (n <= 80) modoMsg = '💀 Campo minado';
+            else modoMsg = '🔥 Caos total';
+
+            mensajeEl.textContent = `${modoMsg} (${metaActual})`;
             metaDisplay.textContent = metaActual;
             puntajeDisplay.textContent = puntaje;
-            objetivoDisplay.textContent = `${nivelData.objetivo}`;
+
+            if (Array.isArray(nivelData.objetivo)) {
+                objetivoDisplay.textContent = nivelData.objetivo.join(' ');
+            } else {
+                objetivoDisplay.textContent = nivelData.objetivo;
+            }
+
             guardarProgreso();
 
             if (nivelData.anuncio === 'intersticial' && nivelIndex > 0) {
@@ -413,17 +575,18 @@
             }
         }
 
-        // =========== SIGUIENTE NIVEL ===========
         function siguienteNivel() {
             if (juegoTerminado || esperandoAnuncio) return;
             const next = nivelIndex + 1;
             if (next >= LEVELS.length) {
-                mensajeEl.textContent = '🏆 ¡Campeón!';
+                mensajeEl.textContent = '🏆 ¡Campeón! Completaste los 100 niveles';
                 enJuego = false;
                 juegoTerminado = true;
                 return;
             }
-
+            if (!nivelesCompletados.includes(nivelData.nivel)) {
+                nivelesCompletados.push(nivelData.nivel);
+            }
             if (nivelData.anuncio === 'recompensado') {
                 mostrarAnuncioRecompensado(() => { iniciarNivel(next); });
             } else {
@@ -431,28 +594,41 @@
             }
         }
 
-        // =========== DIBUJAR ===========
+        // ============ DIBUJAR ============
         function dibujar() {
             const size = 500;
             ctx.clearRect(0, 0, size, size);
 
-            // Fondo
-            ctx.fillStyle = '#0d1525';
+            let colorFondo = '#0d1525';
+            const n = nivelData.nivel;
+            if (n <= 20) colorFondo = '#0d1525';
+            else if (n <= 40) colorFondo = '#0a1a2e';
+            else if (n <= 60) colorFondo = '#1a0a2e';
+            else if (n <= 80) colorFondo = '#2e0a0a';
+            else colorFondo = '#2e1a00';
+            ctx.fillStyle = colorFondo;
             ctx.fillRect(0, 0, size, size);
-            for (let i = 0; i < 25; i++) {
+
+            for (let i = 0; i < 20; i++) {
                 ctx.beginPath();
                 ctx.arc(Math.random() * size, Math.random() * size, 1.5, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(0, 255, 180, 0.06)';
+                ctx.fillStyle = 'rgba(0, 255, 180, 0.05)';
                 ctx.fill();
             }
 
-            // Recursos
             for (let i = 0; i < recursos.length; i++) {
                 const r = recursos[i];
+                if (nivelData.modo === 'memoria_visual' && tiempoCamuflaje > 0 && r.esObjetivo) {
+                    continue;
+                }
                 ctx.font = `${r.radio}px Arial`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                if (r.tipo === nivelData.objetivo) {
+                if (r.esTrampa) {
+                    ctx.fillStyle = '#ff4444';
+                    ctx.shadowColor = '#ff4444';
+                    ctx.shadowBlur = 20;
+                } else if (r.esObjetivo || (Array.isArray(nivelData.objetivo) && nivelData.objetivo.includes(r.tipo))) {
                     ctx.fillStyle = '#ffdd44';
                     ctx.shadowColor = '#ffdd44';
                     ctx.shadowBlur = 20;
@@ -464,59 +640,64 @@
             }
             ctx.shadowBlur = 0;
 
-            // UI tiempo
+            // UI de tiempo y progreso (con más espacio)
             ctx.fillStyle = 'rgba(0,20,30,0.75)';
             ctx.beginPath();
-            ctx.roundRect(10, 10, 110, 30, 10);
+            ctx.roundRect(10, 10, 150, 28, 10);
             ctx.fill();
             ctx.fillStyle = '#88ddbb';
-            ctx.font = 'bold 14px Arial';
-            ctx.fillText(`⏱ ${Math.ceil(tiempoRestante)}s`, 18, 31);
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText(`⏱ ${Math.ceil(tiempoRestante)}s`, 16, 29);
             ctx.fillStyle = '#ffdd88';
-            ctx.fillText(`📦 ${recolectados}/${metaActual}`, 75, 31);
+            ctx.fillText(`📦 ${recolectados}/${metaActual}`, 90, 29);
 
-            // Objetivo fijo (más grande)
+            // Objetivo fijo
             ctx.fillStyle = 'rgba(0,20,30,0.8)';
             ctx.beginPath();
-            ctx.roundRect(size - 70, 10, 60, 60, 12);
+            ctx.roundRect(size - 64, 10, 54, 54, 10);
             ctx.fill();
             ctx.strokeStyle = '#ffdd44';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.roundRect(size - 70, 10, 60, 60, 12);
+            ctx.roundRect(size - 64, 10, 54, 54, 10);
             ctx.stroke();
-            ctx.font = '36px Arial';
+            ctx.font = '32px Arial';
             ctx.fillStyle = '#ffdd44';
             ctx.textAlign = 'center';
-            ctx.fillText(nivelData.objetivo, size - 40, 48);
+            if (Array.isArray(nivelData.objetivo)) {
+                ctx.font = '20px Arial';
+                ctx.fillText(nivelData.objetivo.join(''), size - 37, 43);
+            } else {
+                ctx.font = '32px Arial';
+                ctx.fillText(nivelData.objetivo, size - 37, 43);
+            }
 
-            // Overlays
+            // Mensaje de estado
             if (!enJuego && !juegoTerminado && !esperandoAnuncio) {
                 ctx.fillStyle = 'rgba(0,0,0,0.6)';
                 ctx.fillRect(0, 0, size, size);
                 ctx.fillStyle = '#fff';
-                ctx.font = 'bold 34px Arial';
+                ctx.font = 'bold 32px Arial';
                 ctx.textAlign = 'center';
                 const completado = recolectados >= metaActual;
-                ctx.fillText(completado ? '🌿 ¡Completado!' : '❌ ¡Fallaste!', size/2, size/2 - 20);
-                ctx.font = '18px Arial';
+                ctx.fillText(completado ? '🌿 ¡Completado!' : '❌ ¡Fallaste!', size / 2, size / 2 - 20);
+                ctx.font = '16px Arial';
                 ctx.fillStyle = '#aaddbb';
-                ctx.fillText(completado ? 'Toca para continuar' : 'Toca para reintentar', size/2, size/2 + 40);
+                ctx.fillText(completado ? 'Toca para continuar' : 'Toca para reintentar', size / 2, size / 2 + 35);
             }
             if (juegoTerminado) {
                 ctx.fillStyle = 'rgba(0,0,0,0.7)';
                 ctx.fillRect(0, 0, size, size);
                 ctx.fillStyle = '#ffdd88';
-                ctx.font = 'bold 40px Arial';
+                ctx.font = 'bold 38px Arial';
                 ctx.textAlign = 'center';
-                ctx.fillText('🏆 ¡Campeón!', size/2, size/2 - 20);
-                ctx.font = '18px Arial';
+                ctx.fillText('🏆 ¡Campeón!', size / 2, size / 2 - 20);
+                ctx.font = '16px Arial';
                 ctx.fillStyle = '#aaddbb';
-                ctx.fillText(`Puntaje: ${puntaje}`, size/2, size/2 + 40);
+                ctx.fillText(`Puntaje: ${puntaje}`, size / 2, size / 2 + 35);
             }
         }
 
-        // =========== POLYFILL ===========
         if (!CanvasRenderingContext2D.prototype.roundRect) {
             CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
                 if (r > w / 2) r = w / 2;
@@ -535,10 +716,28 @@
             };
         }
 
-        // =========== ACTUALIZAR ===========
+        // ============ ACTUALIZAR ============
         function actualizar() {
             if (!enJuego || juegoTerminado || esperandoAnuncio) return;
             const size = 500;
+
+            if (nivelData.modo === 'memoria_visual' && tiempoCamuflaje > 0) {
+                tiempoCamuflaje -= 1 / 60;
+                if (tiempoCamuflaje <= 0) {
+                    tiempoCamuflaje = 0;
+                    mensajeEl.textContent = '👀 ¡Apareció! Toca rápido';
+                }
+            }
+
+            if (nivelData.modo === 'duelo_velocidad') {
+                tiempoDuelo += 1 / 60;
+                if (tiempoDuelo > 3 && enJuego) {
+                    enJuego = false;
+                    sonidoTiempo();
+                    mensajeEl.textContent = '⏰ ¡Se acabó el tiempo!';
+                }
+            }
+
             for (let i = 0; i < recursos.length; i++) {
                 const r = recursos[i];
                 r.x += r.dx;
@@ -546,27 +745,32 @@
                 if (r.x < 25 || r.x > size - 25) r.dx *= -1;
                 if (r.y < 25 || r.y > size - 25) r.dy *= -1;
             }
-            tiempoRestante -= 1 / 60;
-            if (tiempoRestante <= 0 && enJuego) {
-                tiempoRestante = 0;
-                enJuego = false;
-                mensajeEl.textContent = '⏰ ¡Tiempo!';
+
+            if (nivelData.modo !== 'duelo_velocidad') {
+                tiempoRestante -= 1 / 60;
+                if (tiempoRestante <= 0 && enJuego) {
+                    tiempoRestante = 0;
+                    enJuego = false;
+                    sonidoTiempo();
+                    mensajeEl.textContent = '⏰ ¡Tiempo!';
+                }
             }
         }
 
-        // =========== LOOP ===========
+        // ============ LOOP ============
         function loop() {
             actualizar();
             dibujar();
             animFrame = requestAnimationFrame(loop);
         }
 
-        // =========== REINICIAR ===========
+        // ============ REINICIAR ============
         function reiniciarNivel() {
             if (esperandoAnuncio) return;
             if (juegoTerminado) {
                 nivelIndex = 0;
                 puntaje = 0;
+                nivelesCompletados = [];
                 iniciarNivel(0);
                 return;
             }
@@ -574,17 +778,72 @@
             mensajeEl.textContent = '🔄 Reintentando';
         }
 
-        // =========== RESET ===========
         function resetProgreso() {
-            if (confirm('¿Borrar todo el progreso?')) {
+            if (confirm('¿Borrar todo el progreso incluyendo tu perfil?')) {
                 localStorage.clear();
                 location.reload();
             }
         }
 
-        // =========== EVENTOS (Click + Táctil) ===========
+        // ============ MAPA ============
+        function actualizarMapa() {
+            const grid = document.getElementById('gridMapa');
+            grid.innerHTML = '';
+            for (let i = 0; i < LEVELS.length; i++) {
+                const div = document.createElement('div');
+                div.className = 'nodo-nivel';
+                const nivelNum = LEVELS[i].nivel;
+                let label = `${nivelNum}`;
+                if (nivelesCompletados.includes(nivelNum)) {
+                    div.classList.add('completado');
+                    label = `✅ ${nivelNum}`;
+                } else if (i === nivelIndex) {
+                    div.classList.add('actual');
+                    label = `▶️ ${nivelNum}`;
+                } else if (i < nivelIndex) {
+                    div.classList.add('completado');
+                    label = `✅ ${nivelNum}`;
+                } else {
+                    div.classList.add('bloqueado');
+                    label = `🔒 ${nivelNum}`;
+                }
+                const n = LEVELS[i].nivel;
+                if (n <= 20) label += ' 🌱';
+                else if (n <= 40) label += ' ⚡';
+                else if (n <= 60) label += ' 🧠';
+                else if (n <= 80) label += ' 💀';
+                else label += ' 🔥';
+                div.textContent = label;
+                grid.appendChild(div);
+            }
+        }
+
+        function abrirMapa() {
+            actualizarMapa();
+            document.getElementById('mapaModal').style.display = 'flex';
+        }
+
+        function cerrarMapa() {
+            document.getElementById('mapaModal').style.display = 'none';
+        }
+
+        // ============ TUTORIAL ============
+        function mostrarTutorial() {
+            const visto = localStorage.getItem('ecobuilder_tutorial_visto');
+            if (!visto) {
+                document.getElementById('tutorialModal').style.display = 'flex';
+            }
+        }
+
+        function cerrarTutorial() {
+            document.getElementById('tutorialModal').style.display = 'none';
+            localStorage.setItem('ecobuilder_tutorial_visto', 'true');
+        }
+
+        // ============ CLICK ============
         function manejarClick(e) {
             e.preventDefault();
+            initAudio();
             if (esperandoAnuncio) return;
             if (juegoTerminado) { reiniciarNivel(); return; }
             if (!enJuego) {
@@ -615,21 +874,62 @@
                 const dx = mx - r.x;
                 const dy = my - r.y;
                 if (dx * dx + dy * dy < (r.radio * 0.9) ** 2) {
-                    if (r.tipo === nivelData.objetivo) {
+                    if (r.esTrampa) {
+                        fallo = true;
+                        sonidoError();
+                        if (nivelData.modo === 'campo_minado' || nivelData.modo === 'caos_total') {
+                            tiempoRestante -= 5;
+                            mensajeEl.textContent = '💀 ¡Trampa! -5s';
+                            r.tipo = '💥';
+                            if (tiempoRestante < 0) tiempoRestante = 0;
+                            setTimeout(() => {
+                                if (tiempoRestante <= 0) {
+                                    enJuego = false;
+                                    mensajeEl.textContent = '⏰ ¡Tiempo!';
+                                }
+                            }, 300);
+                        } else {
+                            enJuego = false;
+                            mensajeEl.textContent = '💀 ¡Trampa!';
+                        }
+                        break;
+                    }
+
+                    let esObjetivo = false;
+                    if (Array.isArray(nivelData.objetivo)) {
+                        esObjetivo = nivelData.objetivo.includes(r.tipo);
+                    } else {
+                        esObjetivo = r.tipo === nivelData.objetivo;
+                    }
+
+                    if (esObjetivo) {
                         acertado = true;
                         recolectados++;
                         puntaje += 10;
                         puntajeDisplay.textContent = puntaje;
                         r.tipo = '✨';
-                        mensajeEl.textContent = `✅ ${recolectados}/${metaActual}`;
+                        sonidoAcierto();
+
+                        if (nivelData.modo === 'campo_minado' || nivelData.modo === 'caos_total') {
+                            tiempoRestante += 3;
+                            mensajeEl.textContent = `✅ +3s! ${recolectados}/${metaActual}`;
+                        } else if (nivelData.modo === 'duelo_velocidad') {
+                            mensajeEl.textContent = `⚡ ${recolectados}/${metaActual}`;
+                            tiempoDuelo = 0;
+                        } else {
+                            mensajeEl.textContent = `✅ ${recolectados}/${metaActual}`;
+                        }
+
                         guardarProgreso();
                         if (recolectados >= metaActual) {
                             enJuego = false;
+                            sonidoNivel();
                             mensajeEl.textContent = '🎉 ¡Meta!';
                         }
                     } else {
                         fallo = true;
                         enJuego = false;
+                        sonidoError();
                         mensajeEl.textContent = `❌ ¡Error!`;
                     }
                     break;
@@ -637,7 +937,11 @@
             }
 
             if (!acertado && !fallo) {
-                mensajeEl.textContent = `🔍 Busca ${nivelData.objetivo}`;
+                if (Array.isArray(nivelData.objetivo)) {
+                    mensajeEl.textContent = `🔍 Busca ${nivelData.objetivo.join(' ')}`;
+                } else {
+                    mensajeEl.textContent = `🔍 Busca ${nivelData.objetivo}`;
+                }
             }
         }
 
@@ -646,19 +950,96 @@
 
         document.getElementById('btnReiniciar').addEventListener('click', reiniciarNivel);
         document.getElementById('btnResetProgreso').addEventListener('click', resetProgreso);
+        document.getElementById('btnMapa').addEventListener('click', abrirMapa);
+        document.getElementById('btnCerrarMapa').addEventListener('click', cerrarMapa);
+        document.getElementById('btnCerrarTutorial').addEventListener('click', cerrarTutorial);
 
-        // =========== INICIAR ===========
-        const hayProgreso = cargarProgreso();
-        if (hayProgreso && nivelIndex < LEVELS.length) {
-            iniciarNivel(nivelIndex);
-            mensajeEl.textContent = `📂 Progreso cargado - Nivel ${nivelData.nivel}`;
-        } else {
-            iniciarNivel(0);
+        // ============ PERFIL - MODAL ============
+        const perfilModal = document.getElementById('perfilModal');
+        const nombreInput = document.getElementById('nombreInput');
+        const errorNombre = document.getElementById('errorNombre');
+        const avatarOpciones = document.querySelectorAll('.avatar-opcion');
+        let avatarSeleccionado = '👾';
+
+        avatarOpciones.forEach(el => {
+            el.addEventListener('click', function() {
+                avatarOpciones.forEach(a => a.classList.remove('seleccionado'));
+                this.classList.add('seleccionado');
+                avatarSeleccionado = this.dataset.avatar;
+            });
+        });
+
+        function seleccionarAvatarGuardado() {
+            avatarOpciones.forEach(el => {
+                el.classList.remove('seleccionado');
+                if (el.dataset.avatar === perfil.avatar) {
+                    el.classList.add('seleccionado');
+                    avatarSeleccionado = perfil.avatar;
+                }
+            });
         }
 
-        loop();
-        console.log('🌿 EcoBuilder - Tamaño y UI mejorados');
-    </script>
+        document.getElementById('btnGuardarPerfil').addEventListener('click', function() {
+            const nombre = nombreInput.value.trim();
+            if (nombre.length < 2) {
+                errorNombre.textContent = '⚠️ Escribe al menos 2 caracteres';
+                return;
+            }
+            if (nombre.length > 20) {
+                errorNombre.textContent = '⚠️ Máximo 20 caracteres';
+                return;
+            }
+            errorNombre.textContent = '';
+            perfil.nombre = nombre;
+            perfil.avatar = avatarSeleccionado;
+            guardarPerfil();
+            actualizarPerfilUI();
+            perfilModal.style.display = 'none';
+            if (!window.juegoIniciado) {
+                window.juegoIniciado = true;
+                iniciarJuegoConPerfil();
+            }
+        });
 
+        nombreInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('btnGuardarPerfil').click();
+            }
+        });
+
+        // ============ INICIO CON PERFIL ============
+        function iniciarJuegoConPerfil() {
+            actualizarEstadoDesdePerfil();
+            iniciarNivel(nivelIndex);
+            mostrarTutorial();
+            loop();
+            console.log('🌿 ECOBUILDER: MENTE VERDE – Con perfil');
+            console.log(`👤 ${perfil.nombre} (${perfil.avatar}) - Nv. ${perfil.nivelIndex + 1}`);
+        }
+
+        // ============ CARGA INICIAL ============
+        const perfilCargado = cargarPerfil();
+
+        if (perfilCargado && perfil.nombre !== 'Jugador') {
+            actualizarPerfilUI();
+            window.juegoIniciado = true;
+            iniciarJuegoConPerfil();
+        } else {
+            if (perfilCargado) {
+                nombreInput.value = perfil.nombre;
+                seleccionarAvatarGuardado();
+            } else {
+                nombreInput.value = '';
+                avatarOpciones.forEach(el => {
+                    el.classList.remove('seleccionado');
+                    if (el.dataset.avatar === '👾') {
+                        el.classList.add('seleccionado');
+                        avatarSeleccionado = '👾';
+                    }
+                });
+            }
+            perfilModal.style.display = 'flex';
+        }
+    </script>
 </body>
 </html>
