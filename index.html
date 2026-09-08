@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-    <!-- ============ ADSENSE + ADMOB H5 (OPCIÓN A + B) ============ -->
+    <!-- ============ ADSENSE + ADMOB H5 ============ -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2020091998402007"
         crossorigin="anonymous"
         data-admob-interstitial-slot="ca-app-pub-2020091998402007/1445634481"
@@ -28,23 +28,23 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
         body { background: #0a0f1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; overflow: hidden; touch-action: none; padding: 10px; }
-        #gameContainer { background: #111a2e; border-radius: 20px; padding: 16px; box-shadow: 0 0 50px rgba(0,255,170,0.1); border: 1px solid rgba(0,255,170,0.12); max-width: 500px; width: 100%; margin: 0 auto; }
-        #branding { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 4px; flex-wrap: wrap; gap: 4px; }
-        #branding .titulo { font-size: 18px; color: #00d4a0; font-weight: bold; letter-spacing: 0.5px; }
+        #gameContainer { background: #111a2e; border-radius: 20px; padding: 12px; box-shadow: 0 0 50px rgba(0,255,170,0.1); border: 1px solid rgba(0,255,170,0.12); max-width: 500px; width: 100%; margin: 0 auto; overflow: hidden; }
+        #branding { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 0 4px; flex-wrap: wrap; gap: 4px; }
+        #branding .titulo { font-size: 16px; color: #00d4a0; font-weight: bold; }
         #branding .titulo span { color: #ffdd44; }
-        #branding .autor { font-size: 10px; color: #6688aa; background: #0f1f2e; padding: 3px 10px; border-radius: 30px; border: 1px solid #1a2a44; }
-        #perfil { display: flex; align-items: center; gap: 10px; background: #0f1f2e; padding: 6px 12px 6px 8px; border-radius: 30px; border: 1px solid #1a2a44; margin-bottom: 10px; }
-        #perfil .avatar { font-size: 28px; line-height: 1; }
-        #perfil .nombre { color: #88ddbb; font-size: 14px; font-weight: bold; }
-        #perfil .nivel-info { color: #6688aa; font-size: 11px; margin-left: auto; }
+        #branding .autor { font-size: 9px; color: #6688aa; background: #0f1f2e; padding: 2px 8px; border-radius: 30px; border: 1px solid #1a2a44; }
+        #perfil { display: flex; align-items: center; gap: 8px; background: #0f1f2e; padding: 4px 10px 4px 6px; border-radius: 30px; border: 1px solid #1a2a44; margin-bottom: 8px; }
+        #perfil .avatar { font-size: 22px; line-height: 1; }
+        #perfil .nombre { color: #88ddbb; font-size: 12px; font-weight: bold; }
+        #perfil .nivel-info { color: #6688aa; font-size: 10px; margin-left: auto; }
         canvas { display: block; border-radius: 12px; background: #0d1525; width: 100%; height: auto; aspect-ratio: 1/1; touch-action: none; cursor: pointer; }
-        #ui { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin-top: 10px; color: #a0e8d0; font-size: 12px; }
-        #ui span { background: #1a2a44; padding: 6px 4px; border-radius: 30px; border: 1px solid #2a4a66; text-align: center; font-size: 11px; font-weight: bold; min-height: 32px; display: flex; align-items: center; justify-content: center; }
-        #ui button { background: #00d4a0; border: none; padding: 6px 4px; border-radius: 30px; font-weight: bold; color: #0a0f1a; cursor: pointer; font-size: 14px; min-height: 32px; touch-action: manipulation; transition: 0.1s; display: flex; align-items: center; justify-content: center; }
+        #ui { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; margin-top: 8px; color: #a0e8d0; font-size: 11px; }
+        #ui span { background: #1a2a44; padding: 4px 2px; border-radius: 30px; border: 1px solid #2a4a66; text-align: center; font-size: 10px; font-weight: bold; min-height: 28px; display: flex; align-items: center; justify-content: center; word-break: break-word; }
+        #ui button { background: #00d4a0; border: none; padding: 4px 2px; border-radius: 30px; font-weight: bold; color: #0a0f1a; cursor: pointer; font-size: 12px; min-height: 28px; touch-action: manipulation; transition: 0.1s; display: flex; align-items: center; justify-content: center; }
         #ui button:active { transform: scale(0.93); }
         #btnResetProgreso { background: #ff6644 !important; color: white !important; }
-        #mensaje { grid-column: span 4; color: #88ddbb; font-size: 12px; background: #0f1f2e; padding: 6px 10px; border-radius: 30px; border-left: 3px solid #00d4a0; text-align: center; min-height: 32px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        #objetivoDisplay { grid-column: span 1; background: #1a2a44; padding: 6px 4px; border-radius: 30px; border: 2px solid #ffdd44; text-align: center; font-size: 22px; color: #ffdd44; min-height: 32px; display: flex; align-items: center; justify-content: center; }
+        #mensaje { grid-column: span 4; color: #88ddbb; font-size: 10px; background: #0f1f2e; padding: 4px 6px; border-radius: 30px; border-left: 3px solid #00d4a0; text-align: center; min-height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; word-break: break-word; }
+        #objetivoDisplay { grid-column: span 1; background: #1a2a44; padding: 4px 2px; border-radius: 30px; border: 2px solid #ffdd44; text-align: center; font-size: 18px; color: #ffdd44; min-height: 28px; display: flex; align-items: center; justify-content: center; }
         #anuncioOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.94); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; font-family: Arial; }
         #anuncioOverlay .contenedor { background: #1a2a44; padding: 28px 20px; border-radius: 20px; text-align: center; border: 2px solid #00d4a0; max-width: 300px; width: 90%; }
         #anuncioOverlay .icono { font-size: 40px; margin-bottom: 10px; }
@@ -117,8 +117,8 @@
         </div>
         <canvas id="gameCanvas" width="500" height="500"></canvas>
 
-        <!-- ============ BANNER ADSENSE (OPCIÓN A) ============ -->
-        <div style="margin: 10px auto; text-align: center; min-height: 60px;">
+        <!-- ============ BANNER ADSENSE ============ -->
+        <div style="margin: 8px auto; text-align: center; min-height: 50px;">
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-2020091998402007"
@@ -259,14 +259,14 @@
             setTimeout(() => playTono(330, 0.1, 0.10), 80);
         }
 
-        // ============ ANUNCIOS ADMOB (OPCIÓN B) ============
+        // ============ ANUNCIOS ADMOB ============
         function mostrarAdMobIntersticial() {
             if (typeof adBreak !== 'undefined') {
                 adBreak({
                     type: 'next',
                     name: 'level_complete',
-                    beforeAd: () => { /* Pausar juego */ },
-                    afterAd: () => { /* Reanudar juego */ }
+                    beforeAd: () => {},
+                    afterAd: () => {}
                 });
             } else {
                 console.log('⚠️ AdMob no disponible');
@@ -278,8 +278,8 @@
                 adBreak({
                     type: 'reward',
                     name: 'reward_extra_points',
-                    beforeAd: () => { /* Pausar juego */ },
-                    afterAd: () => { /* Reanudar juego */ },
+                    beforeAd: () => {},
+                    afterAd: () => {},
                     adViewed: () => {
                         if (callback) callback();
                     }
@@ -292,7 +292,7 @@
         // ============ TIPOS ============
         const TIPOS = ['🌱', '💧', '🌿', '🍄', '🌸', '🌳', '🌟', '⚡', '🔥', '💎', '🦋', '🌈', '🌺', '🍀', '⭐', '🔮', '✨', '🌌', '👾', '🎯', '🌀'];
 
-        // ============ GENERAR NIVELES (1-100) ============
+        // ============ GENERAR NIVELES ============
         const LEVELS = [];
 
         // Niveles 1-20: CLÁSICO
@@ -452,7 +452,7 @@
             actualizarPerfilUI();
         }
 
-        // ============ LOCAL STORAGE (progreso del juego) ============
+        // ============ LOCAL STORAGE ============
         function guardarProgreso() {
             const data = { nivelIndex, puntaje, nivelesCompletados };
             localStorage.setItem('ecobuilder_progreso', JSON.stringify(data));
@@ -553,9 +553,8 @@
             return nuevos;
         }
 
-        // ============ ANUNCIOS SIMULADOS (respaldo) ============
+        // ============ ANUNCIOS SIMULADOS ============
         function mostrarAnuncioIntersticial() {
-            // Usar AdMob si está disponible, si no, usar simulación
             if (typeof adBreak !== 'undefined') {
                 mostrarAdMobIntersticial();
             } else {
