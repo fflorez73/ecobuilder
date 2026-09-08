@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>🌿 EcoBuilder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background: #0a0f1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            touch-action: none;
+        }
+        #gameContainer {
+            background: #111a2e;
+            border-radius: 16px;
+            padding: 12px;
+            box-shadow: 0 0 40px rgba(0, 255, 170, 0.1);
+            border: 1px solid rgba(0, 255, 170, 0.15);
+            max-width: 500px;
+            width: 100%;
+            margin: 8px;
+        }
+        canvas {
+            display: block;
+            border-radius: 10px;
+            background: #0d1525;
+            width: 100%;
+            height: auto;
+            touch-action: none;
+            cursor: pointer;
+        }
+        #ui {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin-top: 10px;
+            color: #a0e8d0;
+            font-size: 11px;
+        }
+        #ui span {
+            background: #1a2a44;
+            padding: 4px 8px;
+            border-radius: 20px;
+            border: 1px solid #2a4a66;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 10px;
+        }
+        #ui button {
+            background: #00d4a0;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #0a0f1a;
+            cursor: pointer;
+            font-size: 10px;
+            touch-action: manipulation;
+        }
+        #ui button:active {
+            transform: scale(0.95);
+        }
+        #btnResetProgreso {
+            background: #ff6644 !important;
+            color: white !important;
+        }
+        #mensaje {
+            grid-column: span 3;
+            color: #88ddbb;
+            font-size: 10px;
+            background: #0f1f2e;
+            padding: 4px 8px;
+            border-radius: 20px;
+            border-left: 3px solid #00d4a0;
+            text-align: center;
+        }
+        #objetivoDisplay {
+            grid-column: span 1;
+            background: #1a2a44;
+            padding: 4px 8px;
+            border-radius: 20px;
+            border: 1px solid #ffdd44;
+            text-align: center;
+            font-size: 16px;
+            color: #ffdd44;
+        }
+        #anuncioOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-family: Arial;
+        }
+        #anuncioOverlay .contenedor {
+            background: #1a2a44;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid #00d4a0;
+            max-width: 300px;
+            width: 90%;
+        }
+        #anuncioOverlay .icono {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+        #anuncioOverlay h2 {
+            color: #fff;
+            margin-bottom: 6px;
+            font-size: 18px;
+        }
+        #anuncioOverlay p {
+            color: #aaddbb;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+        #anuncioOverlay .barra-fondo {
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #anuncioOverlay .barra-progreso {
+            width: 0%;
+            height: 100%;
+            background: #00d4a0;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div id="ui">
+            <span>🌱 Nv <strong id="nivelDisplay">1</strong></span>
+            <span>⭐ <span id="puntajeDisplay">0</span></span>
+            <span>🎯 <span id="metaDisplay">0</span></span>
+            <span id="objetivoDisplay">🎯 🌱</span>
+            <button id="btnReiniciar">↻</button>
+            <button id="btnResetProgreso">🗑️</button>
+            <span id="mensaje">🔍 Busca el objetivo</span>
+        </div>
+    </div>
+
+    <div id="anuncioOverlay">
+        <div class="contenedor">
+            <div class="icono" id="anuncioIcono">📺</div>
+            <h2 id="anuncioTitulo">ANUNCIO</h2>
+            <p id="anuncioTexto">Cargando...</p>
+            <div class="barra-fondo">
+                <div class="barra-progreso" id="anuncioBarra"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        //  ECOBUILDER - ULTRA RÁPIDO (MÓVIL)
+        // ============================================
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const nivelDisplay = document.getElementById('nivelDisplay');
+        const mensajeEl = document.getElementById('mensaje');
+        const puntajeDisplay = document.getElementById('puntajeDisplay');
+        const metaDisplay = document.getElementById('metaDisplay');
+        const objetivoDisplay = document.getElementById('objetivoDisplay');
+
+        const overlay = document.getElementById('anuncioOverlay');
+        const anuncioIcono = document.getElementById('anuncioIcono');
+        const anuncioTitulo = document.getElementById('anuncioTitulo');
+        const anuncioTexto = document.getElementById('anuncioTexto');
+        const anuncioBarra = document.getElementById('anuncioBarra');
+
+        // =========== TIPOS ===========
+        const TIPOS = ['🌱', '💧', '🌿', '🍄', '🌸', '🌳'];
+
+        // =========== 20 NIVELES (más ligeros) ===========
+        const LEVELS = [];
+        for (let i = 1; i <= 20; i++) {
+            const tipoObjetivo = TIPOS[i % TIPOS.length];
+            const meta = Math.min(6 + i * 1.8, 30);
+            const tiempo = Math.max(15, 35 - i * 1.2);
+            const recursos = Math.min(40, 15 + i * 1.5);
+            LEVELS.push({
+                nivel: i,
+                tiempo: Math.round(tiempo),
+                recursos: Math.round(recursos),
+                meta: Math.round(meta),
+                objetivo: tipoObjetivo,
+                anuncio: i > 1 && i % 2 === 0 ? 'intersticial' : (i > 1 && i % 3 === 0 ? 'recompensado' : false)
+            });
+        }
+
+        // =========== ESTADO ===========
+        let nivelIndex = 0;
+        let nivelData = LEVELS[0];
+        let recursos = [];
+        let puntaje = 0;
+        let recolectados = 0;
+        let tiempoRestante = 30;
+        let enJuego = true;
+        let metaActual = 6;
+        let animFrame;
+        let juegoTerminado = false;
+        let esperandoAnuncio = false;
+
+        // =========== LOCAL STORAGE ===========
+        function guardarProgreso() {
+            const data = { nivelIndex, puntaje };
+            localStorage.setItem('ecobuilder_progreso', JSON.stringify(data));
+        }
+
+        function cargarProgreso() {
+            const raw = localStorage.getItem('ecobuilder_progreso');
+            if (raw) {
+                try {
+                    const data = JSON.parse(raw);
+                    nivelIndex = data.nivelIndex || 0;
+                    puntaje = data.puntaje || 0;
+                    if (nivelIndex >= LEVELS.length) nivelIndex = LEVELS.length - 1;
+                    nivelData = LEVELS[nivelIndex];
+                    return true;
+                } catch (e) { /* ignorar */ }
+            }
+            return false;
+        }
+
+        // =========== GENERAR RECURSOS (simple y rápido) ===========
+        function generarRecursos(data) {
+            const nuevos = [];
+            const objetivo = data.objetivo;
+            const total = data.recursos;
+            const meta = data.meta;
+
+            // Objetivos (meta + 2 extra)
+            const cantObj = Math.min(meta + 2, total);
+            for (let i = 0; i < cantObj; i++) {
+                nuevos.push({
+                    x: 40 + Math.random() * 320,
+                    y: 40 + Math.random() * 320,
+                    radio: 16 + Math.random() * 8,
+                    tipo: objetivo,
+                    dx: (Math.random() - 0.5) * 2,
+                    dy: (Math.random() - 0.5) * 2,
+                });
+            }
+
+            // Otros tipos
+            const restantes = total - nuevos.length;
+            const otrosTipos = TIPOS.filter(t => t !== objetivo);
+            for (let i = 0; i < restantes; i++) {
+                const tipo = otrosTipos[Math.floor(Math.random() * otrosTipos.length)];
+                nuevos.push({
+                    x: 40 + Math.random() * 320,
+                    y: 40 + Math.random() * 320,
+                    radio: 16 + Math.random() * 8,
+                    tipo: tipo,
+                    dx: (Math.random() - 0.5) * 2,
+                    dy: (Math.random() - 0.5) * 2,
+                });
+            }
+
+            // Mezclar
+            for (let i = nuevos.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [nuevos[i], nuevos[j]] = [nuevos[j], nuevos[i]];
+            }
+
+            return nuevos;
+        }
+
+        // =========== ANUNCIOS ===========
+        function mostrarAnuncioIntersticial(callback) {
+            esperandoAnuncio = true;
+            overlay.style.display = 'flex';
+            anuncioIcono.textContent = '📺';
+            anuncioTitulo.textContent = 'ANUNCIO';
+            anuncioTexto.textContent = '5s';
+            anuncioBarra.style.width = '0%';
+
+            let progreso = 0;
+            const intervalo = setInterval(() => {
+                progreso += 2;
+                anuncioBarra.style.width = progreso + '%';
+                if (progreso >= 100) {
+                    clearInterval(intervalo);
+                    overlay.style.display = 'none';
+                    esperandoAnuncio = false;
+                    if (callback) callback();
+                }
+            }, 100);
+        }
+
+        function mostrarAnuncioRecompensado(callback) {
+            esperandoAnuncio = true;
+            overlay.style.display = 'flex';
+            anuncioIcono.textContent = '🎁';
+            anuncioTitulo.textContent = 'REWARD';
+            anuncioTexto.textContent = '15s +20pts';
+            anuncioBarra.style.width = '0%';
+
+            let progreso = 0;
+            const intervalo = setInterval(() => {
+                progreso += 0.67;
+                anuncioBarra.style.width = progreso + '%';
+                if (progreso >= 100) {
+                    clearInterval(intervalo);
+                    overlay.style.display = 'none';
+                    esperandoAnuncio = false;
+                    puntaje += 20;
+                    puntajeDisplay.textContent = puntaje;
+                    guardarProgreso();
+                    if (callback) callback();
+                }
+            }, 100);
+        }
+
+        // =========== INICIAR NIVEL ===========
+        function iniciarNivel(index) {
+            if (index >= LEVELS.length) {
+                mensajeEl.textContent = '🏆 ¡Completaste!';
+                enJuego = false;
+                juegoTerminado = true;
+                return;
+            }
+
+            nivelIndex = index;
+            nivelData = LEVELS[index];
+            nivelDisplay.textContent = nivelData.nivel;
+            recursos = generarRecursos(nivelData);
+            tiempoRestante = nivelData.tiempo;
+            metaActual = nivelData.meta;
+            recolectados = 0;
+            enJuego = true;
+            juegoTerminado = false;
+            mensajeEl.textContent = `🎯 ${nivelData.objetivo} (${metaActual})`;
+            metaDisplay.textContent = metaActual;
+            puntajeDisplay.textContent = puntaje;
+            objetivoDisplay.textContent = `${nivelData.objetivo}`;
+            guardarProgreso();
+
+            if (nivelData.anuncio === 'intersticial' && nivelIndex > 0) {
+                mostrarAnuncioIntersticial();
+            }
+        }
+
+        // =========== SIGUIENTE NIVEL ===========
+        function siguienteNivel() {
+            if (juegoTerminado || esperandoAnuncio) return;
+            const next = nivelIndex + 1;
+            if (next >= LEVELS.length) {
+                mensajeEl.textContent = '🏆 ¡Campeón!';
+                enJuego = false;
+                juegoTerminado = true;
+                return;
+            }
+
+            if (nivelData.anuncio === 'recompensado') {
+                mostrarAnuncioRecompensado(() => { iniciarNivel(next); });
+            } else {
+                iniciarNivel(next);
+            }
+        }
+
+        // =========== DIBUJAR ===========
+        function dibujar() {
+            ctx.clearRect(0, 0, 400, 400);
+
+            // Fondo simple
+            ctx.fillStyle = '#0d1525';
+            ctx.fillRect(0, 0, 400, 400);
+            for (let i = 0; i < 20; i++) {
+                ctx.beginPath();
+                ctx.arc(Math.random() * 400, Math.random() * 400, 1, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 255, 180, 0.05)';
+                ctx.fill();
+            }
+
+            // Dibujar recursos
+            for (let i = 0; i < recursos.length; i++) {
+                const r = recursos[i];
+                ctx.font = `${r.radio}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                if (r.tipo === nivelData.objetivo) {
+                    ctx.fillStyle = '#ffdd44';
+                    ctx.shadowColor = '#ffdd44';
+                    ctx.shadowBlur = 15;
+                } else {
+                    ctx.fillStyle = '#88aacc';
+                    ctx.shadowBlur = 0;
+                }
+                ctx.fillText(r.tipo, r.x, r.y);
+            }
+            ctx.shadowBlur = 0;
+
+            // UI tiempo
+            ctx.fillStyle = 'rgba(0,20,30,0.7)';
+            ctx.fillRect(8, 8, 80, 22);
+            ctx.fillStyle = '#88ddbb';
+            ctx.font = '11px Arial';
+            ctx.fillText(`⏱ ${Math.ceil(tiempoRestante)}s`, 14, 23);
+            ctx.fillStyle = '#ffdd88';
+            ctx.fillText(`📦 ${recolectados}/${metaActual}`, 65, 23);
+
+            // Objetivo fijo
+            ctx.fillStyle = 'rgba(0,20,30,0.8)';
+            ctx.beginPath();
+            ctx.roundRect(340, 8, 52, 52, 8);
+            ctx.fill();
+            ctx.strokeStyle = '#ffdd44';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.roundRect(340, 8, 52, 52, 8);
+            ctx.stroke();
+            ctx.font = '28px Arial';
+            ctx.fillStyle = '#ffdd44';
+            ctx.textAlign = 'center';
+            ctx.fillText(nivelData.objetivo, 366, 42);
+
+            // Mensajes overlay
+            if (!enJuego && !juegoTerminado && !esperandoAnuncio) {
+                ctx.fillStyle = 'rgba(0,0,0,0.6)';
+                ctx.fillRect(0, 0, 400, 400);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 28px Arial';
+                ctx.textAlign = 'center';
+                const completado = recolectados >= metaActual;
+                ctx.fillText(completado ? '🌿 ¡Completado!' : '❌ ¡Fallaste!', 200, 180);
+                ctx.font = '14px Arial';
+                ctx.fillStyle = '#aaddbb';
+                ctx.fillText(completado ? 'Toca para continuar' : 'Toca para reintentar', 200, 220);
+            }
+            if (juegoTerminado) {
+                ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                ctx.fillRect(0, 0, 400, 400);
+                ctx.fillStyle = '#ffdd88';
+                ctx.font = 'bold 32px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('🏆 ¡Campeón!', 200, 180);
+                ctx.font = '14px Arial';
+                ctx.fillStyle = '#aaddbb';
+                ctx.fillText(`Puntaje: ${puntaje}`, 200, 220);
+            }
+        }
+
+        // =========== POLYFILL ===========
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+                if (r > w / 2) r = w / 2;
+                if (r > h / 2) r = h / 2;
+                this.moveTo(x + r, y);
+                this.lineTo(x + w - r, y);
+                this.quadraticCurveTo(x + w, y, x + w, y + r);
+                this.lineTo(x + w, y + h - r);
+                this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                this.lineTo(x + r, y + h);
+                this.quadraticCurveTo(x, y + h, x, y + h - r);
+                this.lineTo(x, y + r);
+                this.quadraticCurveTo(x, y, x + r, y);
+                this.closePath();
+                return this;
+            };
+        }
+
+        // =========== ACTUALIZAR ===========
+        function actualizar() {
+            if (!enJuego || juegoTerminado || esperandoAnuncio) return;
+            for (let i = 0; i < recursos.length; i++) {
+                const r = recursos[i];
+                r.x += r.dx;
+                r.y += r.dy;
+                if (r.x < 20 || r.x > 380) r.dx *= -1;
+                if (r.y < 20 || r.y > 380) r.dy *= -1;
+            }
+            tiempoRestante -= 1 / 60;
+            if (tiempoRestante <= 0 && enJuego) {
+                tiempoRestante = 0;
+                enJuego = false;
+                mensajeEl.textContent = '⏰ ¡Tiempo!';
+            }
+        }
+
+        // =========== LOOP ===========
+        function loop() {
+            actualizar();
+            dibujar();
+            animFrame = requestAnimationFrame(loop);
+        }
+
+        // =========== REINICIAR ===========
+        function reiniciarNivel() {
+            if (esperandoAnuncio) return;
+            if (juegoTerminado) {
+                nivelIndex = 0;
+                puntaje = 0;
+                iniciarNivel(0);
+                return;
+            }
+            iniciarNivel(nivelIndex);
+            mensajeEl.textContent = `🔄 Reintentando`;
+        }
+
+        // =========== RESET ===========
+        function resetProgreso() {
+            if (confirm('¿Borrar todo?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // =========== EVENTOS ===========
+        function manejarClick(e) {
+            e.preventDefault();
+            if (esperandoAnuncio) return;
+            if (juegoTerminado) { reiniciarNivel(); return; }
+            if (!enJuego) {
+                if (recolectados >= metaActual) { siguienteNivel(); } else { reiniciarNivel(); }
+                return;
+            }
+
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            let clientX, clientY;
+            if (e.touches) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            const mx = (clientX - rect.left) * scaleX;
+            const my = (clientY - rect.top) * scaleY;
+
+            let acertado = false;
+            let fallo = false;
+
+            for (let r of recursos) {
+                const dx = mx - r.x;
+                const dy = my - r.y;
+                if (dx * dx + dy * dy < (r.radio) ** 2) {
+                    if (r.tipo === nivelData.objetivo) {
+                        acertado = true;
+                        recolectados++;
+                        puntaje += 10;
+                        puntajeDisplay.textContent = puntaje;
+                        r.tipo = '✨';
+                        mensajeEl.textContent = `✅ ${recolectados}/${metaActual}`;
+                        guardarProgreso();
+                        if (recolectados >= metaActual) {
+                            enJuego = false;
+                            mensajeEl.textContent = '🎉 ¡Meta!';
+                        }
+                    } else {
+                        fallo = true;
+                        enJuego = false;
+                        mensajeEl.textContent = `❌ ¡Error!`;
+                    }
+                    break;
+                }
+            }
+
+            if (!acertado && !fallo) {
+                mensajeEl.textContent = `🔍 Busca ${nivelData.objetivo}`;
+            }
+        }
+
+        canvas.addEventListener('click', manejarClick);
+        canvas.addEventListener('touchstart', manejarClick, { passive: false });
+
+        document.getElementById('btnReiniciar').addEventListener('click', reiniciarNivel);
+        document.getElementById('btnResetProgreso').addEventListener('click', resetProgreso);
+
+        // =========== INICIAR ===========
+        const hayProgreso = cargarProgreso();
+        if (hayProgreso && nivelIndex < LEVELS.length) {
+            iniciarNivel(nivelIndex);
+            mensajeEl.textContent = `📂 Progreso cargado - Nivel ${nivelData.nivel}`;
+        } else {
+            iniciarNivel(0);
+        }
+
+        loop();
+        console.log('🌿 EcoBuilder - Ultra rápido para móvil');
+    </script>
+
+</body>
+</html>
