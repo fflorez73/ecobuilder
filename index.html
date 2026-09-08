@@ -12,6 +12,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
+    <!-- ============ ADSENSE + ADMOB H5 (OPCIÓN A + B) ============ -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2020091998402007"
+        crossorigin="anonymous"
+        data-admob-interstitial-slot="ca-app-pub-2020091998402007/1445634481"
+        data-admob-rewarded-slot="ca-app-pub-2020091998402007/2330858243">
+    </script>
+    <script>
+        window.adsbygoogle = window.adsbygoogle || [];
+        var adBreak = adConfig = function(o) {
+            adsbygoogle.push(o);
+        }
+    </script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
         body { background: #0a0f1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; overflow: hidden; touch-action: none; padding: 10px; }
@@ -103,6 +116,20 @@
             <span class="autor">by Mindaxis – FFLOREZ 2026</span>
         </div>
         <canvas id="gameCanvas" width="500" height="500"></canvas>
+
+        <!-- ============ BANNER ADSENSE (OPCIÓN A) ============ -->
+        <div style="margin: 10px auto; text-align: center; min-height: 60px;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-2020091998402007"
+                 data-ad-slot="1445634481"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
         <div id="ui">
             <span>🌱 Nv <strong id="nivelDisplay">1</strong></span>
             <span>⭐ <span id="puntajeDisplay">0</span></span>
@@ -169,7 +196,7 @@
 
     <script>
         // ============================================================
-        //  ECOBUILDER: MENTE VERDE – 100 NIVELES CON 5 MODOS + PERFIL
+        //  ECOBUILDER: MENTE VERDE – 100 NIVELES + ANUNCIOS (A y B)
         // ============================================================
 
         const canvas = document.getElementById('gameCanvas');
@@ -232,10 +259,40 @@
             setTimeout(() => playTono(330, 0.1, 0.10), 80);
         }
 
+        // ============ ANUNCIOS ADMOB (OPCIÓN B) ============
+        function mostrarAdMobIntersticial() {
+            if (typeof adBreak !== 'undefined') {
+                adBreak({
+                    type: 'next',
+                    name: 'level_complete',
+                    beforeAd: () => { /* Pausar juego */ },
+                    afterAd: () => { /* Reanudar juego */ }
+                });
+            } else {
+                console.log('⚠️ AdMob no disponible');
+            }
+        }
+
+        function mostrarAdMobRecompensado(callback) {
+            if (typeof adBreak !== 'undefined') {
+                adBreak({
+                    type: 'reward',
+                    name: 'reward_extra_points',
+                    beforeAd: () => { /* Pausar juego */ },
+                    afterAd: () => { /* Reanudar juego */ },
+                    adViewed: () => {
+                        if (callback) callback();
+                    }
+                });
+            } else {
+                console.log('⚠️ AdMob no disponible');
+            }
+        }
+
         // ============ TIPOS ============
         const TIPOS = ['🌱', '💧', '🌿', '🍄', '🌸', '🌳', '🌟', '⚡', '🔥', '💎', '🦋', '🌈', '🌺', '🍀', '⭐', '🔮', '✨', '🌌', '👾', '🎯', '🌀'];
 
-        // ============ GENERAR NIVELES ============
+        // ============ GENERAR NIVELES (1-100) ============
         const LEVELS = [];
 
         // Niveles 1-20: CLÁSICO
@@ -496,48 +553,54 @@
             return nuevos;
         }
 
-        // ============ ANUNCIOS ============
-        function mostrarAnuncioIntersticial(callback) {
-            esperandoAnuncio = true;
-            overlay.style.display = 'flex';
-            anuncioIcono.textContent = '📺';
-            anuncioTitulo.textContent = 'ANUNCIO';
-            anuncioTexto.textContent = '5s';
-            anuncioBarra.style.width = '0%';
-            let progreso = 0;
-            const intervalo = setInterval(() => {
-                progreso += 2;
-                anuncioBarra.style.width = progreso + '%';
-                if (progreso >= 100) {
-                    clearInterval(intervalo);
-                    overlay.style.display = 'none';
-                    esperandoAnuncio = false;
-                    if (callback) callback();
-                }
-            }, 100);
+        // ============ ANUNCIOS SIMULADOS (respaldo) ============
+        function mostrarAnuncioIntersticial() {
+            // Usar AdMob si está disponible, si no, usar simulación
+            if (typeof adBreak !== 'undefined') {
+                mostrarAdMobIntersticial();
+            } else {
+                esperandoAnuncio = true;
+                overlay.style.display = 'flex';
+                anuncioIcono.textContent = '📺';
+                anuncioTitulo.textContent = 'ANUNCIO INTERSTICIAL';
+                anuncioTexto.textContent = '5 segundos...';
+                anuncioBarra.style.width = '0%';
+                let progreso = 0;
+                const intervalo = setInterval(() => {
+                    progreso += 2;
+                    anuncioBarra.style.width = progreso + '%';
+                    if (progreso >= 100) {
+                        clearInterval(intervalo);
+                        overlay.style.display = 'none';
+                        esperandoAnuncio = false;
+                        mensajeEl.textContent = '✅ Anuncio finalizado';
+                    }
+                }, 100);
+            }
         }
 
         function mostrarAnuncioRecompensado(callback) {
-            esperandoAnuncio = true;
-            overlay.style.display = 'flex';
-            anuncioIcono.textContent = '🎁';
-            anuncioTitulo.textContent = 'REWARD';
-            anuncioTexto.textContent = '15s +20pts';
-            anuncioBarra.style.width = '0%';
-            let progreso = 0;
-            const intervalo = setInterval(() => {
-                progreso += 0.67;
-                anuncioBarra.style.width = progreso + '%';
-                if (progreso >= 100) {
-                    clearInterval(intervalo);
-                    overlay.style.display = 'none';
-                    esperandoAnuncio = false;
-                    puntaje += 20;
-                    puntajeDisplay.textContent = puntaje;
-                    guardarProgreso();
-                    if (callback) callback();
-                }
-            }, 100);
+            if (typeof adBreak !== 'undefined') {
+                mostrarAdMobRecompensado(callback);
+            } else {
+                esperandoAnuncio = true;
+                overlay.style.display = 'flex';
+                anuncioIcono.textContent = '🎁';
+                anuncioTitulo.textContent = 'ANUNCIO RECOMPENSADO';
+                anuncioTexto.textContent = '15s +20pts';
+                anuncioBarra.style.width = '0%';
+                let progreso = 0;
+                const intervalo = setInterval(() => {
+                    progreso += 0.67;
+                    anuncioBarra.style.width = progreso + '%';
+                    if (progreso >= 100) {
+                        clearInterval(intervalo);
+                        overlay.style.display = 'none';
+                        esperandoAnuncio = false;
+                        if (callback) callback();
+                    }
+                }, 100);
+            }
         }
 
         // ============ INICIAR NIVEL ============
@@ -648,7 +711,6 @@
             }
             ctx.shadowBlur = 0;
 
-            // UI de tiempo y progreso (con más espacio)
             ctx.fillStyle = 'rgba(0,20,30,0.75)';
             ctx.beginPath();
             ctx.roundRect(10, 10, 150, 28, 10);
@@ -659,7 +721,6 @@
             ctx.fillStyle = '#ffdd88';
             ctx.fillText(`📦 ${recolectados}/${metaActual}`, 90, 29);
 
-            // Objetivo fijo
             ctx.fillStyle = 'rgba(0,20,30,0.8)';
             ctx.beginPath();
             ctx.roundRect(size - 64, 10, 54, 54, 10);
@@ -680,7 +741,6 @@
                 ctx.fillText(nivelData.objetivo, size - 37, 43);
             }
 
-            // Mensaje de estado
             if (!enJuego && !juegoTerminado && !esperandoAnuncio) {
                 ctx.fillStyle = 'rgba(0,0,0,0.6)';
                 ctx.fillRect(0, 0, size, size);
@@ -1021,7 +1081,7 @@
             iniciarNivel(nivelIndex);
             mostrarTutorial();
             loop();
-            console.log('🌿 ECOBUILDER: MENTE VERDE – Con perfil');
+            console.log('🌿 ECOBUILDER: MENTE VERDE – Con perfil y anuncios');
             console.log(`👤 ${perfil.nombre} (${perfil.avatar}) - Nv. ${perfil.nivelIndex + 1}`);
         }
 
